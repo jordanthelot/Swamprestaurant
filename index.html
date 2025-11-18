@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAMP Loyalty Signup</title>
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link to your local CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-stone-900 text-stone-100 min-h-screen flex items-center justify-center p-4 font-sans">
+
+    <div class="w-full max-w-md bg-stone-800 rounded-xl shadow-2xl overflow-hidden border border-stone-700">
+        
+        <!-- Header -->
+        <div class="bg-green-700 p-6 text-center">
+            <!-- IMAGE INSERTED HERE -->
+            <!-- Ensure you have a folder named 'assets' and the file is named 'logo.png' -->
+            <img src="assets/theswamppic.jpg" alt="SWAMP Logo" class="w-34 h-34 mx-auto mb-4 object-contain">
+            
+            <h1 class="text-2xl font-bold text-white">Join the SWAMP</h1>
+            <p class="text-green-100 mt-2 text-sm">Unlock exclusive deals & secret menu items.</p>
+        </div>
+
+        <!-- Form Container -->
+        <div class="p-8">
+            <form id="loyaltyForm" class="space-y-6">
+                
+                <!-- Name Input -->
+                <div>
+                    <label for="name" class="block text-sm font-medium text-stone-300 mb-1">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Jane Doe"
+                        class="w-full px-4 py-3 bg-stone-900 border border-stone-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-white placeholder-stone-500">
+                </div>
+
+                <!-- Phone Input -->
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-stone-300 mb-1">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567" pattern="[0-9\-\(\)\s]+"
+                        class="w-full px-4 py-3 bg-stone-900 border border-stone-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-white placeholder-stone-500">
+                    <p class="text-xs text-stone-500 mt-2">We'll text you a welcome message immediately.</p>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                    <span>Join the Club</span>
+                </button>
+            </form>
+
+            <!-- Success Message (Hidden by default) -->
+            <div id="successMessage" class="hidden text-center pt-4">
+                <div class="w-16 h-16 bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-white">Welcome Aboard!</h3>
+                <p class="text-stone-400 mt-2">Check your phone. We just sent you a text.</p>
+            </div>
+
+            <!-- Error Message (Hidden by default) -->
+            <div id="errorMessage" class="hidden mt-4 p-3 bg-red-900/50 border border-red-800 rounded text-red-200 text-sm text-center">
+                Something went wrong. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to your local JS file -->
+    <script src="script.js"></script>
+</body>
+</html>
