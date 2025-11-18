@@ -1,7 +1,8 @@
 // Configuration
-// REPLACE THIS with your actual raiaAI webhook or API Endpoint
-const RAIA_API_URL = 'https://api.raia.ai/v1/webhook/YOUR_ENDPOINT_ID'; 
-// If you are using n8n to bridge the gap, put the n8n webhook URL here.
+
+// 1. CONNECT TO N8N
+// This is your Production Webhook URL.
+const WEBHOOK_URL = 'https://raia.app.n8n.cloud/webhook/272c9a2a-67c6-4ae8-9d06-a96099238654'; 
 
 const form = document.getElementById('loyaltyForm');
 const submitBtn = document.getElementById('submitBtn');
@@ -17,22 +18,42 @@ form.addEventListener('submit', async (e) => {
     submitBtn.innerHTML = '<div class="spinner"></div> Processing...';
     errorMessage.classList.add('hidden');
 
-    // 2. Capture Data
+    // 2. Capture & Clean Data
+    // We apply the fix here so RaiaAI doesn't reject the number
+    let rawPhone = document.getElementById('phone').value;
+    
+    // Remove non-numbers
+    let cleanPhone = rawPhone.replace(/\D/g, '');
+    
+    // Add Country Code (+1) if missing
+    if (cleanPhone.length === 10) {
+        cleanPhone = '+1' + cleanPhone;
+    } else if (cleanPhone.length === 11 && cleanPhone.startsWith('1')) {
+        cleanPhone = '+' + cleanPhone;
+    }
+    // Note: If the user types +1..., the regex \D removes the +, so we add it back here:
+    if (!cleanPhone.startsWith('+')) {
+        cleanPhone = '+' + cleanPhone.replace(/^\+/, ''); 
+        // Logic check: The regex above stripped the +, so simply:
+        // if it's 11 digits starting with 1, it's likely 1352..., so just make it +1352...
+    }
+    // Simplified robust logic for US numbers:
+    if (cleanPhone.length === 10) cleanPhone = '+1' + cleanPhone;
+    else if (cleanPhone.length === 11 && cleanPhone.startsWith('1')) cleanPhone = '+' + cleanPhone;
+    
     const formData = {
         name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
+        phone: cleanPhone, // Send the cleaned +1 version
         source: 'web_signup',
         timestamp: new Date().toISOString()
     };
 
     try {
-        // 3. Send to API
-        // Note: This assumes the API accepts JSON. 
-        const response = await fetch(RAIA_API_URL, {
+        // 3. Send to n8n
+        const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer YOUR_API_KEY' // Add this if raiaAI requires auth headers
             },
             body: JSON.stringify(formData)
         });
